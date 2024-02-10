@@ -6,8 +6,7 @@ interface ThemeContextType {
     mode: string;
     setMode: (mode: string) => void;
 }
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+ const ThemeContext =  createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: {
     children: React.ReactNode
@@ -26,21 +25,24 @@ export function ThemeProvider({ children }: {
 
     useEffect(() => {
         handleThemeChange()
-    }, [mode])
+    }, [])
 
     return (
-        <ThemeContext.Provider value={{ mode, setMode }}>
+        <ThemeContext.Provider value={
+            {mode,setMode}
+        }>
             {children}
         </ThemeContext.Provider>
     )
 }
-
 export function useTheme() {
     const context = useContext(ThemeContext);
 
     if (context === undefined) {
         throw new Error('useTheme must be used within a ThemeProvider')
     }
+
+    return context
 }
 
 

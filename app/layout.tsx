@@ -24,12 +24,13 @@ export const metadata: Metadata = {
   }
 }
 
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
+
   return (
     <html lang="en">
       <body className={`${inter.variable} ${space_Grotesk.variable}`}>
@@ -41,7 +42,6 @@ export default function RootLayout({
             }
           }}
         >
-          <p className='h1-bold'>This is a text</p>
           <ThemeProvider>
             {children}
           </ThemeProvider>
