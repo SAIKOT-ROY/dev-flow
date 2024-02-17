@@ -4,6 +4,8 @@ import React from 'react';
 import DevFlow from "../../../public/assets/images/site-logo.svg"
 import { SignedIn, UserButton } from '@clerk/nextjs';
 import Theme from './Theme';
+import MobileNav from './MobileNav';
+import GlobalSearch from '../search/GlobalSearch';
 
 const Navbar = () => {
 
@@ -14,7 +16,7 @@ const Navbar = () => {
                 <Image src={DevFlow} width={23} height={23} alt='DevFlow'></Image>
                 <p className='h2-bold font-spaceGrotesk text-dark-100 dark:text-light-900 max-sm:hidden'>Dev <span className='text-primary-50'>Overflow</span></p>
             </Link>
-            GlobalSearch
+            <GlobalSearch />
             <div className='flex-between gap-5'>
                 <Theme />
                 <SignedIn>
@@ -28,7 +30,7 @@ const Navbar = () => {
                     }}
                     } />
                 </SignedIn>
-                MobileNavigation
+                <MobileNav />
             </div>
         </nav>
     );
