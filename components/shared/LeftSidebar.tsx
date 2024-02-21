@@ -51,12 +51,12 @@ function LeftSidebar() {
                     <Link href='/sign-up'>
                         <Button className="small-medium light-border-2 btn-tertiary min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none text-dark400_light900">
                         <Image
-                                src={signUp}
-                                alt='sign up'
-                                width={20}
-                                height={20}
-                                className='invert-colors lg:hidden'
-                            />
+                            src={signUp}
+                            alt='sign up'
+                            width={20}
+                            height={20}
+                            className='invert-colors lg:hidden'
+                        />
                             <span className="max-lg:hidden">
                                 Sign Up
                             </span>
