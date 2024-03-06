@@ -5,6 +5,30 @@ import search from "@/public/assets/icons/search.svg"
 import Filter from "@/components/shared/Filter";
 import { HomePageFilters } from "@/constants/filters";
 import HomeFilters from "@/components/home/HomeFilters";
+import NoResults from "@/components/shared/NoResults";
+
+const questions = [
+  {
+    _id: 1,
+    title: "Cascading deletes in SQLAlchemy?",
+    tags: [{ _id: 1, name: 'python' }, { _id: 2, name: 'SQL' }],
+    author: "John Doe",
+    upvotes: 10,
+    views: 100,
+    answers: 2,
+    createdAt: "2021-09-01T12:00:00.000Z"
+  },
+  {
+    _id: 2,
+    title: "How to center a div?",
+    tags: [{ _id: 1, name: 'css' }, { _id: 2, name: 'SQL' }],
+    author: "John Doe",
+    upvotes: 10,
+    views: 100,
+    answers: 2,
+    createdAt: "2021-09-01T12:00:00.000Z"
+  },
+]
 
 
 export default function Home() {
@@ -20,20 +44,31 @@ export default function Home() {
       </div>
 
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
-        <LocalSearchBar 
-         route="/"
-         iconPosition="left"
-         imgSrc={search}
-         placeholder="Search for question"
-         otherClasses="flex-1"
+        <LocalSearchBar
+          route="/"
+          iconPosition="left"
+          imgSrc={search}
+          placeholder="Search for question"
+          otherClasses="flex-1"
         />
         <Filter
-         filters={HomePageFilters}
-         otherClasses="min-h-[56px] sm:min-w-[170px]"
-         containerClasses="hidden max-md:flex"
+          filters={HomePageFilters}
+          otherClasses="min-h-[56px] sm:min-w-[170px]"
+          containerClasses="hidden max-md:flex"
         />
       </div>
       <HomeFilters />
+      <div className="mt-10 flex w-full flex-col gap-6">
+        {questions.length > 0 ? questions.map((question) => (
+          "QuestionCard"
+        )) : 
+        <NoResults 
+          title="There are no question to show"
+          description="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
+          link="/ask-question"
+          linkTitle="Ask a Question"
+        />}
+      </div>
     </>
   )
 }
