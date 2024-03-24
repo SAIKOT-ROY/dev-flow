@@ -7,19 +7,19 @@ const GlobalSearch = () => {
     return (
         <div className='relative w-full max-w-[600px] max-lg:hidden'>
             <div
-            className='background-light800_darkgradient relative flex min-h-[56px] grow items-center gap-1 roundel-xl px-4'
+            className='background-light800_darkgradient relative flex min-h-[56px] grow items-center gap-1 rounded-xl px-4'
         >
             <Image
               src={search}
               alt='search'
               width={24}
               height={24}
-              className='curson-pointer'
+              className='cursor-pointer'
             />
             <Input
               type='text'
-              placeholder='Search globally'
-              value=''
+              placeholder='Search anything globally...'
+            //   value=''
               className='paragraph-regular no-focus placeholder background-light800_darkgradient border-none shadow-none outline-none'
              />
         </div>

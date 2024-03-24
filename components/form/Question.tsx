@@ -20,10 +20,19 @@ import { QuestionsSchema } from "@/lib/validations"
 import { Badge } from '../ui/badge';
 import Image from 'next/image';
 import close from '@/public/assets/icons/close.svg'
+import { createQuestion } from '@/lib/actions/question.action';
+import { usePathname, useRouter } from 'next/navigation';
 
-const type:any = 'create'
+const type: any = 'create'
 
-const Question = () => {
+interface Props {
+    mongoUserId: string;
+}
+
+const Question = ({mongoUserId}: Props) => {
+    const router = useRouter()
+    const pathname = usePathname()
+
     const editorRef = useRef(null);
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -32,17 +41,25 @@ const Question = () => {
         defaultValues: {
             title: "",
             explanation: "",
-            tags: []
+            tags: [],
         },
     })
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof QuestionsSchema>) {
+    async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
         setIsSubmitting(true)
-        
-        try{
+        try {
+            // make an aysnc call to api for create a question
+            await createQuestion({
+                title: values.title,
+                content: values.explanation,
+                tags: values.tags,
+                author: JSON.parse(mongoUserId)
+            });
 
-        }catch (error){
+            // navigate to home page
+            router.push('/')
+        } catch (error) {
 
         } finally {
             setIsSubmitting(false)
@@ -50,6 +67,7 @@ const Question = () => {
     }
 
     const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, field: any) => {
+
         if (e.key === 'Enter' && field.name === 'tags') {
             e.preventDefault();
 
@@ -73,6 +91,7 @@ const Question = () => {
             }
         }
     }
+
 
     const handleTagRemove = (tag: String, field: any) => {
         const newTags = field.value.filter((t: string) => t !== tag);
@@ -109,10 +128,12 @@ const Question = () => {
                             <FormControl className="mt-3.5">
                                 <Editor
                                     apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
-                                    onInit={(evt, editor) =>
+                                    onInit={(evt, editor) => {
                                         // @ts-ignore
                                         editorRef.current = editor
-                                    }
+                                    }}
+                                    onBlur={field.onBlur}
+                                    onEditorChange={(content) => field.onChange(content)}
                                     initialValue=""
                                     init={{
                                         height: 350,
@@ -148,8 +169,9 @@ const Question = () => {
                                 <>
                                     <Input
                                         className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                                        placeholder="Add Tags..." 
                                         onKeyDown={(e) => handleInputKeyDown(e, field)}
-                                        placeholder="Add Tags..." />
+                                    />
 
                                     {
                                         field.value.length > 0 && (
@@ -169,8 +191,8 @@ const Question = () => {
                                                             className='cursor-pointer object-contain invert-0 dark:invert-1'
                                                         />
                                                     </Badge>
-                                                ))}
-                                            </div>
+                                              ))}
+                                              </div>
                                         )
                                     }
                                 </>
@@ -183,19 +205,19 @@ const Question = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className='primary-gradient w-fit !text-light-900' 
-                 disabled={isSubmitting}>
-                    {isSubmitting ? 
-                    (
-                    <>
-                        {type === 'edit' ? 'Editing...' : 'Posting'}
-                    </>
-                    )
-                     : 
-                     (<>
-                        {type === 'edit' ? 'Edit Question' : 'Ask a Question'}
-                     </>)
-                     }
+                <Button type="submit" className='primary-gradient w-fit !text-light-900'
+                    disabled={isSubmitting}>
+                    {isSubmitting ?
+                        (
+                            <>
+                                {type === 'edit' ? 'Editing...' : 'Posting'}
+                            </>
+                        )
+                        :
+                        (<>
+                            {type === 'edit' ? 'Edit Question' : 'Ask a Question'}
+                        </>)
+                    }
                 </Button>
             </form>
         </Form>
