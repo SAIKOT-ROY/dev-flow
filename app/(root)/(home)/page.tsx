@@ -7,6 +7,7 @@ import { HomePageFilters } from "@/constants/filters";
 import HomeFilters from "@/components/home/HomeFilters";
 import NoResults from "@/components/shared/NoResults";
 import QuestionCard from "@/components/cards/QuestionCard";
+import { getQuestions } from "@/lib/actions/question.action";
 
 const questions = [
   {
@@ -32,7 +33,12 @@ const questions = [
 ];
 
 
-export default function Home() {
+export default async function Home() {
+
+  const results = await getQuestions({});
+  console.log(results?.questions);
+
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -60,7 +66,7 @@ export default function Home() {
       </div>
       <HomeFilters />
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ? questions.map((question) => (
+        {/* {questions.length > 0 ? questions.map((question) => (
           <QuestionCard 
             key={question._id}
             _id={question._id}
@@ -70,6 +76,19 @@ export default function Home() {
             upvotes={question.upvotes}
             views={question.views}
             answers={question.answers}
+            createdAt={question.createdAt}
+          />
+        )) :  */}
+        {results.questions.length > 0 ? results.questions.map((question) => (
+          <QuestionCard 
+            key={question._id}
+            _id={question._id}
+            title={question.title}
+            tags={question.tags}
+            author={question.author}
+            upvotes={question.upvotes}
+            views={question.views}
+            answers={question.content}
             createdAt={question.createdAt}
           />
         )) : 
