@@ -12,7 +12,6 @@ export async function POST(req: Request) {
     // TODO: ADD ENV WEBHOOKS SECRET IN ENV.FILE
 
     const WEBHOOK_SECRET = process.env.NEXT_CLERK_WEBHOOK_SECRET
-    console.log(WEBHOOK_SECRET, "YOOOO");
 
     if (!WEBHOOK_SECRET) {
         throw new Error('Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local')
