@@ -36,7 +36,7 @@ const questions = [
 export default async function Home() {
 
   const results = await getQuestions({});
-  console.log(results?.questions);
+  // console.log(results?.questions);
 
 
   return (
