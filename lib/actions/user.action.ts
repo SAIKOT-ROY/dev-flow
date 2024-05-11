@@ -2,7 +2,7 @@
 
 import User from "@/database/user.model";
 import { connectToDatabase } from "../mongoose"
-import { CreateUserParams, DeleteUserParams, UpdateUserParams } from "./shared.types";
+import { CreateUserParams, DeleteUserParams, GetAllUsersParams, UpdateUserParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 
@@ -35,12 +35,12 @@ export async function updateUser(params: UpdateUserParams) {
     try {
         connectToDatabase()
 
-        const {clerkId, updateData, path} = params
+        const { clerkId, updateData, path } = params
 
-        await User.findOneAndUpdate({clerkId}, updateData, {
+        await User.findOneAndUpdate({ clerkId }, updateData, {
             new: true,
         })
-        
+
         revalidatePath(path)
     } catch (error) {
         console.log(error);
@@ -50,12 +50,12 @@ export async function updateUser(params: UpdateUserParams) {
 export async function deleteUser(params: DeleteUserParams) {
     try {
         connectToDatabase()
-        
-        const {clerkId} = params;
-        
-        const user = await User.findOneAndDelete({clerkId});
 
-        if(!user){
+        const { clerkId } = params;
+
+        const user = await User.findOneAndDelete({ clerkId });
+
+        if (!user) {
             throw new Error('User not Found')
         }
 
@@ -64,16 +64,41 @@ export async function deleteUser(params: DeleteUserParams) {
         // const userQuestionIds = await Question.find({author: user._id}).distinct('_id');
 
         // delete user questions 
-        await Question.deleteMany({author: user._id});
+        await Question.deleteMany({ author: user._id });
 
         // TODO: delete user answers, comments, etc
 
         const deletedUser = await User.findByIdAndDelete(user._id);
 
         return deletedUser
-        
+
     } catch (error) {
         console.log(error);
         throw error
     }
 }
+
+export async function getAllUsers(params: GetAllUsersParams) {
+    try {
+        connectToDatabase();
+
+        // const {page =1, pageSize = 20, filter, searchQuery} = params;
+
+        const users = await User.find({}).sort({ createdAt: -1 })
+
+        return { users }
+
+    } catch (error) {
+        console.log(error);
+        throw error
+    }
+}
+
+// export async function getAllUsers(params: GetAllUsersParams) {
+//     try{
+//         connectToDatabase();
+//     } catch(error){
+//         console.log(error);
+//         throw error
+//     }
+// }
