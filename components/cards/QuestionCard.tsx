@@ -5,7 +5,7 @@ import Metric from '../shared/Metric';
 import like from "@/public/assets/icons/like.svg"
 import message from "@/public/assets/icons/message.svg"
 import eye from "@/public/assets/icons/eye.svg"
-import avatar from "@/public/assets/icons/avatar.svg"
+// import avatar from "@/public/assets/icons/avatar.svg"
 import { formatNumber, getTimestamp } from '@/lib/utils';
 
 interface QuestionProps {
