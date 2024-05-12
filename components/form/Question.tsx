@@ -22,6 +22,7 @@ import Image from 'next/image';
 import close from '@/public/assets/icons/close.svg'
 import { createQuestion } from '@/lib/actions/question.action';
 import { usePathname, useRouter } from 'next/navigation';
+import { useTheme } from '@/context/ThemeProvider';
 
 const type: any = 'create'
 
@@ -29,9 +30,10 @@ interface Props {
     mongoUserId: string;
 }
 
-const Question = ({mongoUserId}: Props) => {
+const Question = ({ mongoUserId }: Props) => {
     const router = useRouter()
     const pathname = usePathname()
+    const {mode} = useTheme()
 
     const editorRef = useRef(null);
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -49,7 +51,7 @@ const Question = ({mongoUserId}: Props) => {
     async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
         setIsSubmitting(true)
 
-        
+
         try {
             // make an aysnc call to api for create a question
             await createQuestion({
@@ -150,7 +152,9 @@ const Question = ({mongoUserId}: Props) => {
                                         toolbar: 'undo redo |' +
                                             'codesample | bold italic forecolor | alignleft aligncenter ' +
                                             'alignright alignjustify | bullist numlist',
-                                        content_style: 'body { font-family:Inter; font-size:16px }'
+                                        content_style: 'body { font-family:Inter; font-size:16px }',
+                                        skin: mode === 'dark' ? 'oxide-dark' : 'oxide',
+                                        content_css: mode === 'dark' ? 'dark' : 'light'
                                     }}
                                 />
                             </FormControl>
@@ -172,7 +176,7 @@ const Question = ({mongoUserId}: Props) => {
                                 <>
                                     <Input
                                         className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
-                                        placeholder="Add Tags..." 
+                                        placeholder="Add Tags..."
                                         onKeyDown={(e) => handleInputKeyDown(e, field)}
                                     />
 
@@ -194,8 +198,8 @@ const Question = ({mongoUserId}: Props) => {
                                                             className='cursor-pointer object-contain invert-0 dark:invert-1'
                                                         />
                                                     </Badge>
-                                              ))}
-                                              </div>
+                                                ))}
+                                            </div>
                                         )
                                     }
                                 </>

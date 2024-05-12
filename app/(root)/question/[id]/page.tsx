@@ -9,15 +9,27 @@ import eye from "@/public/assets/icons/eye.svg"
 import ParseHTML from "@/components/shared/ParseHTML"
 import RenderTag from "@/components/shared/RenderTag"
 import Answer from "@/components/form/Answer"
+import { auth } from "@clerk/nextjs"
+import { getUserById } from "@/lib/actions/user.action"
+import AllAnswers from "@/components/shared/AllAnswers"
+import Votes from "@/components/shared/Votes"
+
 
 interface Params {
     id: string;
     // Add other properties as needed
-  }
+}
 
-const Page = async ({ params }: {params: Params}) => {
+const Page = async ({ params }: { params: Params }) => {
 
     const result = await getQuestionById({ questionId: params.id })
+    const { userId: clerkId } = auth();
+
+    let mongoUser
+
+    if (clerkId) {
+        mongoUser = await getUserById({ userId: clerkId })
+    }
 
     return (
         <>
@@ -38,7 +50,7 @@ const Page = async ({ params }: {params: Params}) => {
                         </p>
                     </Link>
                     <div className="flex justify-end">
-                        VOTING
+                        <Votes />
                     </div>
                 </div>
                 <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
@@ -72,11 +84,22 @@ const Page = async ({ params }: {params: Params}) => {
 
             <div className="mt-8 flex flex-wrap gap-2">
                 {result.tags.map((tag: any) => (
-                    <RenderTag key={tag._id} _id={tag._id} name={tag.name} 
-                    showCount={false} />
+                    <RenderTag key={tag._id} _id={tag._id} name={tag.name}
+                        showCount={false} />
                 ))}
             </div>
-            <Answer />
+
+            <AllAnswers
+                questionId={result._id}
+                totalAnswers={result.content.length}
+                userId={JSON.stringify(mongoUser.id)}
+            />
+
+            <Answer
+                question={result.content}
+                questionId={JSON.stringify(result._id)}
+                authorId={JSON.stringify(mongoUser.id)}
+            />
         </>
 
     )
