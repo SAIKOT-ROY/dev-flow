@@ -9,28 +9,6 @@ import NoResults from "@/components/shared/NoResults";
 import QuestionCard from "@/components/cards/QuestionCard";
 import { getQuestions } from "@/lib/actions/question.action";
 
-const questions = [
-  {
-    _id: "1",
-    title: "Cascading deletes in SQLAlchemy?",
-    tags: [{ _id: "1", name: "python" }, { _id: "2", name: "SQL" }],
-    author: { _id: "1", name: "John Doe", picture: "url_to_picture" },
-    upvotes: 10000000,
-    views: 100,
-    answers: [],
-    createdAt: new Date("2023-09-01T12:00:00.000Z"),
-  },
-  {
-    _id: "2",
-    title: "How to center a div?",
-    tags: [{ _id: "3", name: "css" }, { _id: "4", name: "SQL" }],
-    author: { _id: "2", name: "John Doe", picture: "url_to_picture" },
-    upvotes: 8,
-    views: 90,
-    answers: [],
-    createdAt: new Date("2021-09-01T12:00:00.000Z"),
-  },
-];
 
 
 export default async function Home() {
