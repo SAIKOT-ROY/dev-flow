@@ -61,3 +61,15 @@ export const formatNumber = (inputNumber: number): string => {
   return result;
 };
 
+export const getJoinedDate = (date: Date): string => {
+  
+  const month =date.toLocaleString('default', {month: 'long'});
+  const year = date.getFullYear();
+
+  const joinedDate = `${month} ${year}`;
+  return joinedDate
+}
+
+
+
+

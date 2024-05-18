@@ -1,6 +1,6 @@
 "use client"
 import { sidebarLinks } from '@/constants'
-import { SignedOut } from '@clerk/nextjs'
+import { SignedOut, useAuth } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -9,7 +9,7 @@ import login from "@/public/assets/icons/account.svg"
 import signUp from "@/public/assets/icons/sign-up.svg"
 
 function LeftSidebar() {
-
+    const {userId} = useAuth()
     const pathname = usePathname()
 
     return (
@@ -17,6 +17,15 @@ function LeftSidebar() {
             <div className="flex flex-1 flex-col gap-6">
                 {sidebarLinks.map((item) => {
                     const isActive = (pathname.includes(item.route) && item.route.length > 1) || pathname === item.route
+
+                    if(item.route === '/profile'){
+                        if(userId){
+                            item.route = `${item.route}/${userId}`
+                        } else {
+                            return null
+                        }
+                    }
+
                     return (
                         <Link key={item.route} href={item.route}
                             className={`${isActive ? 'primary-gradient rounded-lg text-light-900' : 'text-dark300_light900'} flex items-center justify-start gap-4 bg-transparent p-4`}>

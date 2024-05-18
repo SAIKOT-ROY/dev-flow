@@ -11,6 +11,7 @@ import { formatNumber, getTimestamp } from '@/lib/utils';
 interface QuestionProps {
     _id: string;
     title: string;
+    clerkId?: string | null;
     tags: {
         _id: string;
         name: string;
@@ -23,7 +24,16 @@ interface QuestionProps {
 }
 
 const QuestionCard = (
-    { _id, title, tags, author, upvotes, views, answers, createdAt }: QuestionProps) => {
+    { _id,
+        title,
+        clerkId,
+        tags,
+        author,
+        upvotes,
+        views,
+        answers,
+        createdAt 
+    }: QuestionProps) => {
     return (
         <div className='card-wrapper rounded-[10px] p-9 sm:px-11'>
             <div className='flex flex-col-reverse items-start justify-between gap-5
@@ -44,35 +54,35 @@ const QuestionCard = (
                 ))}
             </div>
             <div className='flex-between mt-6 w-full flex-wrap gap-3'>
-                    <Metric 
-                        imgUrl={author.picture}
-                        alt="user"
-                        value={author.name}
-                        title={`- asked ${getTimestamp(createdAt)}`}
-                        isAuthor
-                        textStyles="body-medium text-dark400_light700"
-                     />
-                    <Metric 
-                        imgUrl={like}
-                        alt="Upvotes"
-                        value={formatNumber(upvotes.length)}
-                        title="Votes"
-                        textStyles="small-medium text-dark400_light800"
-                     />
-                    <Metric 
-                        imgUrl={message}
-                        alt="answers"
-                        value={formatNumber(answers.length)}
-                        title="Answers"
-                        textStyles="small-medium text-dark400_light800"
-                     />
-                    <Metric 
-                        imgUrl={eye}
-                        alt="eye"
-                        value={formatNumber(views)}
-                        title="Views"
-                        textStyles="small-medium text-dark400_light800"
-                     />
+                <Metric
+                    imgUrl={author.picture}
+                    alt="user"
+                    value={author.name}
+                    title={`- asked ${getTimestamp(createdAt)}`}
+                    isAuthor
+                    textStyles="body-medium text-dark400_light700"
+                />
+                <Metric
+                    imgUrl={like}
+                    alt="Upvotes"
+                    value={formatNumber(upvotes.length)}
+                    title="Votes"
+                    textStyles="small-medium text-dark400_light800"
+                />
+                <Metric
+                    imgUrl={message}
+                    alt="answers"
+                    value={formatNumber(answers.length)}
+                    title="Answers"
+                    textStyles="small-medium text-dark400_light800"
+                />
+                <Metric
+                    imgUrl={eye}
+                    alt="eye"
+                    value={formatNumber(views)}
+                    title="Views"
+                    textStyles="small-medium text-dark400_light800"
+                />
             </div>
         </div>
     )
