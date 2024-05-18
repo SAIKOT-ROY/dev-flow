@@ -14,7 +14,6 @@ const AnswersTab = async ({ searchParams, userId, clerkId }: Props) => {
         page:1,
     })
 
-    console.log(result.answers[0].question, "this is it mate");
   return (
     <>
         {result.answers.map((item) => (

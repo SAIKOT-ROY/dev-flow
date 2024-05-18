@@ -1,4 +1,3 @@
-
 "use server"
 import { FilterQuery } from "mongoose";
 import User from "@/database/user.model";

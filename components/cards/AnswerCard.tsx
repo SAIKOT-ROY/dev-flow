@@ -2,6 +2,8 @@ import { formatNumber, getTimestamp } from "@/lib/utils"
 import Link from "next/link"
 import Metric from "../shared/Metric"
 import like from "@/public/assets/icons/like.svg"
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
 interface Props {
     _id: string;
@@ -24,7 +26,8 @@ const AnswerCard = ({
     createdAt,
 }: Props) => {
 
-    console.log(question, "this is it");
+    const showActionButtons = clerkId && clerkId === author.clerkId;
+
     return (
         <Link href={`/question/${question._id}/#${_id}`}
             className='card-wrapper rounded-[10px] px-11 py-9'
@@ -38,6 +41,11 @@ const AnswerCard = ({
                         {question.title}
                     </h3>
                 </div>
+                <SignedIn>
+                    {showActionButtons && (
+                        <EditDeleteAction type="Answer" itemId={JSON.stringify(_id)} />
+                    )}
+                </SignedIn>
             </div>
             <div className="flex-between mt-6 w-full flex-wrap gap-3">
                 <Metric
