@@ -42,15 +42,15 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
     const editorRef = useRef(null);
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const parsedQuestionDetails = JSON.parse(questionDetails || '')
+    const parsedQuestionDetails = questionDetails && JSON.parse(questionDetails || '')
 
-    const groupedTags = parsedQuestionDetails.tags.map((tag: Tag) => tag.name)
+    const groupedTags = parsedQuestionDetails?.tags.map((tag: Tag) => tag.name)
 
     const form = useForm<z.infer<typeof QuestionsSchema>>({
         resolver: zodResolver(QuestionsSchema),
         defaultValues: {
-            title: parsedQuestionDetails.title || "",
-            explanation: parsedQuestionDetails.content || "",
+            title: parsedQuestionDetails?.title || "",
+            explanation: parsedQuestionDetails?.content || "",
             tags: groupedTags || [],
         },
     })
@@ -156,7 +156,7 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
                                     }}
                                     onBlur={field.onBlur}
                                     onEditorChange={(content) => field.onChange(content)}
-                                    initialValue={parsedQuestionDetails.content || ""}
+                                    initialValue={parsedQuestionDetails?.content || ""}
                                     init={{
                                         height: 350,
                                         menubar: false,
@@ -205,7 +205,7 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
                                                 <Badge
                                                     key={tag}
                                                     className='subtle-medium background-light800_dark300 text-light400_light500 flex items-center justify-center gap-2 rounded-md border-none px-4 py-2 capitalize'
-                                                    onClick={() => type !== 'Edit' ? handleTagRemove(tag, field) : () => {}}
+                                                    onClick={() => type !== 'Edit' ? handleTagRemove(tag, field) : () => { }}
                                                 >
                                                     {tag}
                                                     {type !== 'Edit' && (

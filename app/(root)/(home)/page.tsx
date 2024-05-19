@@ -8,15 +8,16 @@ import HomeFilters from "@/components/home/HomeFilters";
 import NoResults from "@/components/shared/NoResults";
 import QuestionCard from "@/components/cards/QuestionCard";
 import { getQuestions } from "@/lib/actions/question.action";
+import { SearchParamsProps } from "@/types";
 
 
 
-export default async function Home() {
+export default async function Home({searchParams}: SearchParamsProps) {
 
-  const results = await getQuestions({});
-  // console.log(results?.questions);
-
-
+  const results = await getQuestions({
+    searchQuery: searchParams.q,
+  });
+  
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">

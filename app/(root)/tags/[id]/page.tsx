@@ -1,7 +1,6 @@
 import QuestionCard from "@/components/cards/QuestionCard"
 import NoResults from "@/components/shared/NoResults"
 import LocalSearchBar from "@/components/shared/search/LocalSearchBar"
-import { IQuestion } from "@/database/question.model"
 import { getQuestionByTagId } from "@/lib/actions/tag.actions"
 import { URLProps } from "@/types"
 import search from "@/public/assets/icons/search.svg"
@@ -19,7 +18,7 @@ const Page = async ({ params, searchParams }: URLProps) => {
             <h1 className="h1-bold text-dark100_light900">{result.tagTitle}</h1>
             <div className="mt-11 w-full">
                 <LocalSearchBar
-                    route="/"
+                    route={`/tags/${params.id}`}
                     iconPosition="left"
                     imgSrc={search}
                     placeholder="Search Tag question"
