@@ -5,20 +5,21 @@ import { QuestionFilters } from "@/constants/filters";
 import NoResults from "@/components/shared/NoResults";
 import QuestionCard from "@/components/cards/QuestionCard";
 import { getSavedQuestions } from "@/lib/actions/user.action";
-import {auth} from '@clerk/nextjs'
+import { auth } from '@clerk/nextjs'
 import { SearchParamsProps } from "@/types";
+import Pagination from "@/components/shared/Pagination";
 
-export default async function Home({searchParams}: SearchParamsProps) {
-    const {userId} = auth()
+export default async function Home({ searchParams }: SearchParamsProps) {
+    const { userId } = auth()
 
-    if(!userId) return null
+    if (!userId) return null
 
     const results = await getSavedQuestions({
         clerkId: userId,
         searchQuery: searchParams.q,
-        filter: searchParams.filter
+        filter: searchParams.filter,
+        page: searchParams.page ? +searchParams.page : 1
     });
-    
 
     return (
         <>
@@ -46,7 +47,7 @@ export default async function Home({searchParams}: SearchParamsProps) {
                         author={question.author}
                         upvotes={question.upvotes}
                         views={question.views}
-                        answers={question.content}
+                        answers={question.answers}
                         createdAt={question.createdAt}
                     />
                 )) :
@@ -56,6 +57,13 @@ export default async function Home({searchParams}: SearchParamsProps) {
                         link="/ask-question"
                         linkTitle="Ask a Question"
                     />}
+            </div>
+
+            <div className="mt-10">
+                <Pagination
+                    pageNumber={searchParams?.page ? +searchParams.page : 1}
+                    isNext={results.isNext}
+                />
             </div>
         </>
     )

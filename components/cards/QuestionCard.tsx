@@ -33,11 +33,10 @@ const QuestionCard = (
         author,
         upvotes,
         views,
-        answers = [],
+        answers ,
         createdAt 
     }: QuestionProps) => {
-        console.log(answers, "answers in QuestionCard");
-
+        
         const showActionButtons = clerkId && clerkId === author.clerkId;
 
     return (
