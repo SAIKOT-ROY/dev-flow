@@ -13,21 +13,39 @@ import { FilterQuery } from "mongoose";
 export async function getQuestions(params: GetQuestionsParams) {
     try {
         connectToDatabase();
-        const {searchQuery} = params;
+        const { searchQuery, filter } = params;
 
         const query: FilterQuery<typeof Question> = {}
 
-        if(searchQuery){
+        if (searchQuery) {
             query.$or = [
-                {title: {$regex: new RegExp(searchQuery, "i")}},
-                {content: {$regex: new RegExp(searchQuery, "i")}}
+                { title: { $regex: new RegExp(searchQuery, "i") } },
+                { content: { $regex: new RegExp(searchQuery, "i") } }
             ]
+        }
+
+        let sortOptions = {};
+
+        switch (filter) {
+            case "newest":
+                sortOptions = { createdAt: -1 }
+                break;
+            case "frequent":
+                sortOptions = { views: -1 }
+                break;
+
+            case "unanswered":
+                query.ans = { $size: 0 }
+                break
+            default:
+                break;
         }
 
         const questions = await Question.find(query)
             .populate({ path: 'tags', model: Tag })
             .populate({ path: 'author', model: User })
-            .sort({ createdAt: -1 })
+            .populate({ path: 'answers', model: Answer })
+            .sort(sortOptions)
 
         return { questions }
 
@@ -165,9 +183,9 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
 
         await Question.deleteOne({ _id: questionId })
         await Answer.deleteMany({ question: questionId })
-        await Interaction.deleteMany({question: questionId})
-        await Tag.updateMany({question: questionId}, {$pull: {questions: questionId}})
-        
+        await Interaction.deleteMany({ question: questionId })
+        await Tag.updateMany({ question: questionId }, { $pull: { questions: questionId } })
+
     } catch (error) {
         console.log(error);
         throw error
@@ -179,10 +197,10 @@ export async function editQuestion(params: EditQuestionParams) {
         connectToDatabase();
 
         const { questionId, path, title, content } = params;
-        
+
         const question = await Question.findById(questionId).populate("tags")
 
-        if(!question){
+        if (!question) {
             throw new Error("Question not found")
         }
 
@@ -203,8 +221,8 @@ export async function getHotQuestions() {
         connectToDatabase();
 
         const hotQuestions = await Question.find({})
-        .sort({views: -1, upvotes: -1})
-        .limit(5);
+            .sort({ views: -1, upvotes: -1 })
+            .limit(5);
 
         return hotQuestions
     } catch (error) {

@@ -69,6 +69,7 @@ export interface CreateQuestionParams {
     tags: string[];
     author: Schema.Types.ObjectId | IUser;
     path: string;
+    answers?: Schema.Types.ObjectId[];
 }
 export interface GetQuestionByIdParams {
     questionId: string;

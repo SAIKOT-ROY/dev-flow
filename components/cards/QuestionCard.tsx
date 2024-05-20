@@ -26,16 +26,17 @@ interface QuestionProps {
 }
 
 const QuestionCard = (
-    { _id,
+    {   _id,
         title,
         clerkId,
         tags,
         author,
         upvotes,
         views,
-        answers,
+        answers = [],
         createdAt 
     }: QuestionProps) => {
+        console.log(answers, "answers in QuestionCard");
 
         const showActionButtons = clerkId && clerkId === author.clerkId;
 

@@ -16,7 +16,10 @@ export default async function Home({searchParams}: SearchParamsProps) {
 
   const results = await getQuestions({
     searchQuery: searchParams.q,
+    filter: searchParams.filter,
   });
+
+
   
   return (
     <>
@@ -54,7 +57,7 @@ export default async function Home({searchParams}: SearchParamsProps) {
             author={question.author}
             upvotes={question.upvotes}
             views={question.views}
-            answers={question.content}
+            answers={question?.answers}
             createdAt={question.createdAt}
           />
         )) : 
