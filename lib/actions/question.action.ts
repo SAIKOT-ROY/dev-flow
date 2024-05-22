@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/interaction.model";
 import { FilterQuery } from "mongoose";
+import { ReceiptRussianRuble } from "lucide-react";
 
 
 export async function getQuestions(params: GetQuestionsParams) {
@@ -15,7 +16,7 @@ export async function getQuestions(params: GetQuestionsParams) {
         connectToDatabase();
         const { searchQuery, filter, page = 1, pageSize = 2 } = params;
 
-        const skipAmount = (page -1) * pageSize
+        const skipAmount = (page - 1) * pageSize
         const query: FilterQuery<typeof Question> = {}
 
         if (searchQuery) {
@@ -94,9 +95,19 @@ export async function createQuestion(params: CreateQuestionParams) {
             $push: { tags: { $each: tagDocuments } }
         })
 
+        // Create an interaction record for the user's ask_question action
+        await Interaction.create({
+            user: author,
+            action: "ask_question",
+            question: question._id,
+            tags: tagDocuments
+        })
+        // This is to increase reputation in author
+        await User.findByIdAndUpdate(author, { $inc: { reputation: 5 } })
+
         revalidatePath(path)
     } catch (error) {
-
+        console.log(error);
     }
 }
 
@@ -142,8 +153,15 @@ export async function upVoteQuestion(params: QuestionVoteParams) {
             throw new Error("Question not found")
         }
 
-        revalidatePath(path)
+        await User.findByIdAndUpdate(userId,
+            { $inc: { reputation: hasupVoted ? -1 : 1 } 
+        })
 
+        await User.findByIdAndUpdate(question.author, {
+            $inc: {reputation: hasupVoted ? -10 : 10}
+        })
+
+        revalidatePath(path)
     } catch (error) {
         console.log(error);
         throw error
@@ -174,6 +192,9 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
         if (!question) {
             throw new Error("Question not found")
         }
+
+        await User.findByIdAndUpdate(userId, { $inc: { reputation: hasdownVoted ? - 2 : 2}})
+        await User.findByIdAndUpdate(question.author, { $inc: { reputation: hasdownVoted ? - 10 : 10}})
 
         revalidatePath(path)
 
