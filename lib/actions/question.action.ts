@@ -8,13 +8,12 @@ import { revalidatePath } from "next/cache";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/interaction.model";
 import { FilterQuery } from "mongoose";
-import { ReceiptRussianRuble } from "lucide-react";
 
 
 export async function getQuestions(params: GetQuestionsParams) {
     try {
         connectToDatabase();
-        const { searchQuery, filter, page = 1, pageSize = 2 } = params;
+        const { searchQuery, filter, page = 1, pageSize = 10 } = params;
 
         const skipAmount = (page - 1) * pageSize
         const query: FilterQuery<typeof Question> = {}

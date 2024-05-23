@@ -8,8 +8,6 @@ import search from "@/public/assets/icons/search.svg"
 import { SearchParamsProps } from "@/types"
 import Link from "next/link"
 
-
-
 const Page = async ({ searchParams }: SearchParamsProps) => {
 
     const result = await getAllUsers({
