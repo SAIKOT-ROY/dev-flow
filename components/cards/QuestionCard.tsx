@@ -26,18 +26,18 @@ interface QuestionProps {
 }
 
 const QuestionCard = (
-    {   _id,
+    { _id,
         title,
         clerkId,
         tags,
         author,
         upvotes,
         views,
-        answers ,
-        createdAt 
+        answers,
+        createdAt
     }: QuestionProps) => {
-        
-        const showActionButtons = clerkId && clerkId === author.clerkId;
+
+    const showActionButtons = clerkId && clerkId === author.clerkId;
 
     return (
         <div className='card-wrapper rounded-[10px] p-9 sm:px-11'>
@@ -71,27 +71,29 @@ const QuestionCard = (
                     isAuthor
                     textStyles="body-medium text-dark400_light700"
                 />
-                <Metric
-                    imgUrl={like}
-                    alt="Upvotes"
-                    value={formatNumber(upvotes.length)}
-                    title="Votes"
-                    textStyles="small-medium text-dark400_light800"
-                />
-                <Metric
-                    imgUrl={message}
-                    alt="answers"
-                    value={formatNumber(answers.length)}
-                    title="Answers"
-                    textStyles="small-medium text-dark400_light800"
-                />
-                <Metric
-                    imgUrl={eye}
-                    alt="eye"
-                    value={formatNumber(views)}
-                    title="Views"
-                    textStyles="small-medium text-dark400_light800"
-                />
+                <div className='flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start'>
+                    <Metric
+                        imgUrl={like}
+                        alt="Upvotes"
+                        value={formatNumber(upvotes.length)}
+                        title="Votes"
+                        textStyles="small-medium text-dark400_light800"
+                    />
+                    <Metric
+                        imgUrl={message}
+                        alt="answers"
+                        value={formatNumber(answers.length)}
+                        title="Answers"
+                        textStyles="small-medium text-dark400_light800"
+                    />
+                    <Metric
+                        imgUrl={eye}
+                        alt="eye"
+                        value={formatNumber(views)}
+                        title="Views"
+                        textStyles="small-medium text-dark400_light800"
+                    />
+                </div>
             </div>
         </div>
     )

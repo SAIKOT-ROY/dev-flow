@@ -7,19 +7,45 @@ import { HomePageFilters } from "@/constants/filters";
 import HomeFilters from "@/components/home/HomeFilters";
 import NoResults from "@/components/shared/NoResults";
 import QuestionCard from "@/components/cards/QuestionCard";
-import { getQuestions } from "@/lib/actions/question.action";
+import { getQuestions, getRecommendedQuestion } from "@/lib/actions/question.action";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
+import type { Metadata } from "next";
+import { auth } from "@clerk/nextjs";
 
-
+export const metadata: Metadata = {
+  title: 'Home | Dev overflow',
+  description: 'Dev Overflow is a community of 1,00000+ developers. Join us'
+}
 
 export default async function Home({ searchParams }: SearchParamsProps) {
 
-  const results = await getQuestions({
-    searchQuery: searchParams.q,
-    filter: searchParams.filter,
-    page: searchParams.page ? +searchParams.page : 1
-  });
+  const {userId} = auth()
+  
+  let results;
+
+  if (searchParams?.filter === 'recommended') {
+    if (userId) {
+      results = await getRecommendedQuestion({
+        userId,
+        searchQuery: searchParams.q,
+        page: searchParams.page ? +searchParams.page : 1
+      });
+    } else {
+      results = {
+        questions: [],
+        isNext: false
+      }
+    }
+  } else {
+    results = await getQuestions({
+      searchQuery: searchParams.q,
+      filter: searchParams.filter,
+      page: searchParams.page ? +searchParams.page : 1
+    });
+  }
+
+
 
 
 

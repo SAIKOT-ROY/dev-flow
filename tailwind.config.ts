@@ -17,6 +17,13 @@ module.exports = {
     },
     extend: {
       colors: {
+        background: '#f8fafc',
+        foreground: '#1f2937',
+        destructive: '#dc2626',
+        'destructive-foreground': '#ffffff',
+        'border-destructive': '#b91c1c',
+        'bg-destructive': '#f87171',
+        'text-destructive-foreground': '#ffffff',
         muted: '#e5e7eb',
         primary: {
           500: "#FF7000",
