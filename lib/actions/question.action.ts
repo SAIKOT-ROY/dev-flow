@@ -58,7 +58,10 @@ export async function getQuestions(params: GetQuestionsParams) {
         return { questions, isNext }
 
     } catch (error) {
-        console.log(error);
+        return {
+            questions: [],
+            isNext: false,
+        };
         throw error
     }
 
@@ -284,6 +287,7 @@ export async function getRecommendedQuestion(params:RecommendedParams) {
          }, []);
 
          const distinctUserTagIds = [
+            //@ts-ignore
             ...new Set(userTags.map((tag: any) => tag.id))
          ]
 

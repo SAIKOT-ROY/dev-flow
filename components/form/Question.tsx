@@ -31,9 +31,6 @@ interface Props {
     questionDetails?: string;
 }
 
-interface Tag {
-    name: string;
-}
 
 const Question = ({ type, mongoUserId, questionDetails }: Props) => {
     const router = useRouter()
@@ -44,7 +41,7 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
 
     const parsedQuestionDetails = questionDetails && JSON.parse(questionDetails || '')
 
-    const groupedTags = parsedQuestionDetails?.tags.map((tag: Tag) => tag.name)
+    const groupedTags = parsedQuestionDetails?.tags.map((tag: any) => tag.name)
 
     const form = useForm<z.infer<typeof QuestionsSchema>>({
         resolver: zodResolver(QuestionsSchema),

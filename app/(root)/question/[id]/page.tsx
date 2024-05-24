@@ -15,7 +15,7 @@ import AllAnswers from "@/components/shared/AllAnswers"
 import Votes from "@/components/shared/Votes"
 
 
-const Page = async ({ params, searchParams } ) => {
+const Page = async ({ params, searchParams }: any ) => {
 
     const result = await getQuestionById({ questionId: params.id })
     const { userId: clerkId } = auth();

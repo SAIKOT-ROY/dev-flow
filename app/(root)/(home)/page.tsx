@@ -20,9 +20,13 @@ export const metadata: Metadata = {
 
 export default async function Home({ searchParams }: SearchParamsProps) {
 
-  const {userId} = auth()
-  
-  let results;
+  const { userId } = auth()
+
+  let results: {
+    questions: Omit<Omit<any, never>, never>[];
+    isNext: boolean;
+  } | undefined;
+
 
   if (searchParams?.filter === 'recommended') {
     if (userId) {
@@ -45,8 +49,10 @@ export default async function Home({ searchParams }: SearchParamsProps) {
     });
   }
 
-
-
+  results = results as {
+    questions: Omit<Omit<any, never>, never>[];
+    isNext: boolean;
+  };
 
 
   return (
