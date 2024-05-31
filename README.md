@@ -49,7 +49,6 @@
 ### **Frontend**
 
 - Next.js: A React framework for server-side rendering, static site generation, and more.
-- React: A JavaScript library for building user interfaces.
 - Tailwind CSS: A utility-first CSS framework for styling.
 - Shadchn UI: A set of accessible and unstyled UI components.
 - Tinymce: A rich text editor for managing content.
